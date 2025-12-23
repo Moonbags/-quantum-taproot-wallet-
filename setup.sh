@@ -13,7 +13,9 @@ read -p "Testnet? (y/N): " TESTNET
 [[ "$TESTNET" == "y" ]] && EXTRA="--testnet" || EXTRA=""
 
 # 1-of-3 spending: hot or cold immediately, or recovery after 1008 blocks.
-SCRIPT_TREE="or_d(pk_h(${HOT}),or_d(pk_h(${COLD}),and_v(v:pk_h(${RECOV}),older(1008))))"
+RECOVERY_BRANCH="and_v(v:pk_h(${RECOV}),older(1008))"
+COLD_OR_RECOV="or_d(pk_h(${COLD}),${RECOVERY_BRANCH})"
+SCRIPT_TREE="or_d(pk_h(${HOT}),${COLD_OR_RECOV})"
 BASE_DESC="tr(${INTERNAL},${SCRIPT_TREE})"
 
 echo "Validating descriptor..."
