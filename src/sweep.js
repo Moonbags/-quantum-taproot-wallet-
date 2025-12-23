@@ -30,7 +30,8 @@ function calculateWeight(tx) {
   // Add witness weight
   tx.inputs.forEach(input => {
     if (input.witness) {
-      weight += input.witness.length;
+      // Witness can be a number (estimated size) or an array
+      weight += typeof input.witness === 'number' ? input.witness : input.witness.length;
     }
   });
   

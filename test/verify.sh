@@ -174,12 +174,13 @@ const invalid2 = vault.verifySpendingProof(tamperedProof2);
 console.log('  Tampered leaf:', invalid2 ? '❌ Accepted (BAD)' : '✓ Rejected (GOOD)');
 
 // Test 4: Tampered proof path
+let invalid3 = false;
 if (proof.proof.length > 0) {
   const tamperedProof3 = {
     ...proof,
     proof: proof.proof.map(p => ({ ...p, hash: '0'.repeat(64) }))
   };
-  const invalid3 = vault.verifySpendingProof(tamperedProof3);
+  invalid3 = vault.verifySpendingProof(tamperedProof3);
   console.log('  Tampered path:', invalid3 ? '❌ Accepted (BAD)' : '✓ Rejected (GOOD)');
 }
 
