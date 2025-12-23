@@ -26,10 +26,12 @@ echo "Fund: $ADDR"
 ```
 
 ## Why NUMS?
-Internal: `0250929b74c1a04954b78b4b6035e97a5e078a5a0f28ec96d547bfee9ace803ac0`—no privkey → key-path impossible. Wallet auto-tweaks.
+Internal: `0250929b74c1a04954b78b4b6035e97a5e078a5a0f28ec96d547bfee9ace803ac0`—no privkey → key-path impossible forever. Wallet auto-tweaks output key.
 
 ## Test First
 1. Use `bitcoin-cli -testnet`
-2. Verify: `bitcoin-cli getdescriptorinfo "$BASE_DESC"`
+2. Verify descriptor: `bitcoin-cli getdescriptorinfo "$BASE_DESC"`
+3. Fund small amount, test spends
 
-MIT License - see LICENSE.
+## License
+MIT License - see LICENSE file.
