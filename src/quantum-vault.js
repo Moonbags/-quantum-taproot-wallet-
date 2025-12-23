@@ -134,15 +134,32 @@ class QuantumVault {
 
   /**
    * Export vault data (WARNING: Contains private keys!)
+   * 
+   * SECURITY: In production, this function MUST encrypt private keys
+   * before export. Never store unencrypted private keys.
+   * 
+   * @param {string} encryptionKey - (Not implemented) Encryption key for private data
+   * @returns {Object} Vault data (currently unencrypted - FOR DEMO ONLY)
    */
-  exportVault() {
+  exportVault(encryptionKey = null) {
+    if (!encryptionKey) {
+      console.warn('⚠️  WARNING: Exporting unencrypted private keys!');
+      console.warn('   This is ONLY safe for testing/demo purposes.');
+      console.warn('   Production code MUST encrypt private keys before export.');
+    }
+    
+    // TODO: Implement encryption using encryptionKey parameter
+    // For production: use AES-256-GCM or similar authenticated encryption
+    
     return {
       numKeys: this.numKeys,
       merkleRoot: this.getMerkleRoot().toString('hex'),
       usedKeys: Array.from(this.usedKeys),
-      // In production, encrypt private keys!
+      // SECURITY WARNING: Private keys exported in plaintext (demo only!)
       privateKeys: this.privateKeys.map(pk => pk.map(buf => buf.toString('hex'))),
-      publicKeyHashes: this.publicKeyHashes.map(h => h.toString('hex'))
+      publicKeyHashes: this.publicKeyHashes.map(h => h.toString('hex')),
+      _encrypted: false,
+      _warning: 'UNENCRYPTED - DO NOT USE WITH REAL FUNDS'
     };
   }
 

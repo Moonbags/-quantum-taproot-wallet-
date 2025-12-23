@@ -113,12 +113,13 @@ class MerkleTree {
       
       for (let i = 0; i < currentLevel.length; i += 2) {
         if (i + 1 < currentLevel.length) {
+          // Standard case: combine two nodes
           const combined = Buffer.concat([currentLevel[i], currentLevel[i + 1]]);
           nextLevel.push(hash256(combined));
         } else {
-          // Odd number of nodes, hash with itself
-          const combined = Buffer.concat([currentLevel[i], currentLevel[i]]);
-          nextLevel.push(hash256(combined));
+          // Odd number: promote the last node to next level (standard approach)
+          // This is safe as it doesn't introduce exploitable duplication
+          nextLevel.push(currentLevel[i]);
         }
       }
       
@@ -153,13 +154,9 @@ class MerkleTree {
           hash: currentLevel[siblingIndex],
           position: isRightNode ? 'left' : 'right'
         });
-      } else {
-        // Odd number of nodes, sibling is self
-        proof.push({
-          hash: currentLevel[index],
-          position: 'self'
-        });
       }
+      // If no sibling exists (odd node at end), no proof element needed
+      // The node is promoted directly to next level
 
       index = Math.floor(index / 2);
     }
@@ -180,10 +177,8 @@ class MerkleTree {
         hash = hash256(Buffer.concat([sibling, hash]));
       } else if (step.position === 'right') {
         hash = hash256(Buffer.concat([hash, sibling]));
-      } else {
-        // position === 'self'
-        hash = hash256(Buffer.concat([hash, hash]));
       }
+      // If no position (promoted node), hash stays as-is
     }
 
     return hash.equals(root);

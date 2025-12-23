@@ -74,15 +74,36 @@ class TaprootDescriptorBuilder {
   }
 
   /**
-   * Create vault verification script (pseudocode for now)
+   * Create vault verification script (placeholder representation)
+   * 
+   * NOTE: Bitcoin Script does not currently support the operations needed
+   * for Merkle proof verification (SHA256 hash verification, tree traversal).
+   * 
+   * Real implementation would require either:
+   * 1. Bitcoin soft fork adding new opcodes for Merkle verification
+   * 2. Optimistic verification via covenant emulation (complex)
+   * 3. Layer 2 solution (Lightning, sidechains) with native support
+   * 
+   * This is a conceptual placeholder for educational purposes.
    */
   createVaultScript(merkleRoot) {
-    // This would be actual Bitcoin Script in production
-    // For now, return a representation
     return {
-      opcode: 'VAULT_VERIFY',
+      // This would need to be actual Bitcoin Script in production
+      placeholder: true,
+      description: [
+        'CONCEPTUAL: Actual Bitcoin Script implementation requires:',
+        '1. OP_CAT for buffer concatenation (currently disabled)',
+        '2. Multiple OP_SHA256 for Merkle path verification', 
+        '3. Stack manipulation for proof traversal',
+        '4. New opcodes via soft fork for practical implementation'
+      ].join('\n  '),
       merkleRoot: merkleRoot.toString('hex'),
-      description: 'Verifies Merkle proof and W-OTS signature'
+      requiredOpcodes: [
+        'OP_SHA256 (exists)',
+        'OP_CAT (disabled, needs soft fork)',
+        'OP_MERKLE_VERIFY (proposed, needs soft fork)'
+      ],
+      implementation: 'Requires Bitcoin protocol upgrade or Layer 2 solution'
     };
   }
 
