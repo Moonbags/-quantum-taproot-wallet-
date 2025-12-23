@@ -7,7 +7,7 @@ INTERNAL="0250929b74c1a04954b78b4b6035e97a5e078a5a0f28ec96d547bfee9ace803ac0"
 echo "=== Replace these ranged xpubs ==="
 read -p "Hot ranged xpub (m/86'/1'/0'/0/*): " HOT
 read -p "Cold ranged xpub (m/86'/1'/0'/1/*): " COLD
-read -p "Recovery ranged xpub (m/86'/1'/0'/1/*): " RECOV
+read -p "Recovery ranged xpub (m/86'/1'/0'/2/*): " RECOV
 read -p "Testnet? (y/N): " TESTNET
 
 [[ "$TESTNET" == "y" ]] && EXTRA="--testnet" || EXTRA=""
