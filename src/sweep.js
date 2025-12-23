@@ -104,7 +104,8 @@ function createSweepTransaction(vault, destination, keyPair, options = {}) {
   
   // Estimate witness size per input
   const witnessPerInput = useKeyPath ? 64 : (
-    keyPair.algorithm === 'ML-DSA' ? 2420 : 1280
+    keyPair && keyPair.algorithm === 'ML-DSA' ? 2420 : 
+    keyPair && keyPair.algorithm === 'Falcon' ? 1280 : 2420
   );
   
   // Add witness size estimate

@@ -4,6 +4,14 @@
  * 
  * Implements post-quantum signature scheme integration for Bitcoin spends
  * Supporting ML-DSA (CRYSTALS-Dilithium) and Falcon signature schemes
+ * 
+ * ⚠️ IMPORTANT: This is a SIMULATED/DEMONSTRATION implementation.
+ * In production, use actual NIST-compliant libraries:
+ * - liboqs (Open Quantum Safe): https://github.com/open-quantum-safe/liboqs
+ * - pqcrypto: https://github.com/rustpq/pqcrypto
+ * 
+ * This code demonstrates the structure and interface for post-quantum
+ * signature integration but does NOT provide actual cryptographic security.
  */
 
 const crypto = require('crypto');
@@ -11,6 +19,9 @@ const crypto = require('crypto');
 /**
  * ML-DSA (Module-Lattice Digital Signature Algorithm) Configuration
  * Based on CRYSTALS-Dilithium NIST standard
+ * 
+ * NOTE: This is a SIMULATED implementation for demonstration purposes.
+ * In production, use actual NIST-compliant ML-DSA library (e.g., liboqs, pqcrypto)
  */
 const ML_DSA_CONFIG = {
   'ml-dsa-44': {
@@ -42,6 +53,9 @@ const ML_DSA_CONFIG = {
 /**
  * Falcon Configuration
  * NIST Round 3 finalist - compact signatures
+ * 
+ * NOTE: This is a SIMULATED implementation for demonstration purposes.
+ * In production, use actual NIST-compliant Falcon library (e.g., liboqs, pqcrypto)
  */
 const FALCON_CONFIG = {
   'falcon-512': {

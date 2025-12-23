@@ -4,6 +4,10 @@
  * 
  * Generates Bitcoin Taproot output descriptors integrated with
  * post-quantum signature schemes in the script tree
+ * 
+ * ⚠️ IMPORTANT: Key tweaking uses simplified simulation (XOR) for demonstration.
+ * In production, implement proper BIP 341 Taproot key tweaking with actual
+ * elliptic curve point addition using secp256k1 library.
  */
 
 const crypto = require('crypto');
@@ -189,6 +193,8 @@ function tweakPublicKey(internalKey, merkleRoot) {
   
   // In practice, this would do point addition on the curve
   // For this implementation, we simulate by XORing (not cryptographically valid)
+  // WARNING: This is a DEMONSTRATION ONLY. In production, use proper elliptic curve
+  // point addition for Taproot key tweaking as specified in BIP 341
   const tweakedKey = Buffer.alloc(32);
   for (let i = 0; i < 32; i++) {
     tweakedKey[i] = internalKeyBuf[i] ^ tweak[i];
