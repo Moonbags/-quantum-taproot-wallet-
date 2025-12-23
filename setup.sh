@@ -13,7 +13,7 @@ read -p "Testnet? (y/N): " TESTNET
 [[ "$TESTNET" == "y" ]] && EXTRA="--testnet" || EXTRA=""
 
 # 1-of-3 spending: hot or cold immediately, or recovery after 1008 blocks.
-BASE_DESC="tr(${INTERNAL},thresh(1,pk(${HOT}),or_d(pk(${COLD}),and_v(v:pk(${RECOV}),older(1008)))))"
+BASE_DESC="tr(${INTERNAL},or_d(pk(${HOT}),or_d(pk(${COLD}),and_v(v:pk(${RECOV}),older(1008)))))"
 
 echo "Validating descriptor..."
 bitcoin-cli $EXTRA getdescriptorinfo "$BASE_DESC" || { echo "Invalid descriptor"; exit 1; }
