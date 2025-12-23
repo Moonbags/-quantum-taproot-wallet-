@@ -12,6 +12,7 @@ read -p "Testnet? (y/N): " TESTNET
 
 [[ "$TESTNET" == "y" ]] && EXTRA="--testnet" || EXTRA=""
 
+# 1-of-3 spending: hot or cold immediately, or recovery after 1008 blocks.
 BASE_DESC="tr(${INTERNAL},thresh(1,pk(${HOT}),pk(${COLD}),and_v(v:pk(${RECOV}),older(1008))))"
 
 echo "Validating descriptor..."
@@ -22,7 +23,7 @@ DESC="${BASE_DESC}#${CHECKSUM}"
 
 echo "✅ Descriptor: $DESC"
 
-bitcoin-cli $EXTRA createwallet "qs" true true "" true true
+bitcoin-cli $EXTRA -named createwallet wallet_name="qs" disable_private_keys=true blank=true passphrase="" avoid_reuse=true descriptors=true
 bitcoin-cli $EXTRA -rpcwallet=qs -named importdescriptors "[{\"desc\":\"$DESC\",\"active\":true,\"range\":[0,999],\"timestamp\":\"now\",\"internal\":false}]"
 
 ADDR=$(bitcoin-cli $EXTRA -rpcwallet=qs -named deriveaddresses descriptor="$DESC" range="[0,0]" | jq -r '.[0]')
