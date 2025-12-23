@@ -15,8 +15,18 @@ const NETWORK_FLAGS = {
   mainnet: [],
 };
 
+function assertSafeDescriptor(descriptor) {
+  if (!descriptor || typeof descriptor !== 'string') {
+    throw new Error('Descriptor is required');
+  }
+  if (!/^[A-Za-z0-9_:/\[\]{}(),*#\.-]+$/.test(descriptor)) {
+    throw new Error('Descriptor contains unsupported characters');
+  }
+  return descriptor;
+}
+
 function ensureXpub(label, value) {
-  if (!value || typeof value !== 'string' || value.trim().length < 10) {
+  if (!value || typeof value !== 'string' || value.trim().length < 100) {
     throw new Error(`Missing or invalid ${label} xpub`);
   }
   return value.trim();
@@ -35,7 +45,8 @@ function buildDescriptor({ hotXpub, coldXpub, recoveryXpub }) {
 }
 
 function descriptorWithChecksum(descriptor, network = 'signet') {
-  const args = [...(NETWORK_FLAGS[network] || []), 'getdescriptorinfo', descriptor];
+  const safeDescriptor = assertSafeDescriptor(descriptor);
+  const args = [...(NETWORK_FLAGS[network] || []), 'getdescriptorinfo', safeDescriptor];
   const cli = spawnSync('bitcoin-cli', args, { encoding: 'utf8' });
   if (cli.status !== 0) {
     return { descriptor, checksum: null, source: 'local' };
@@ -49,7 +60,7 @@ function descriptorWithChecksum(descriptor, network = 'signet') {
 }
 
 function buildImportDescriptor(params, network = 'signet', range = DEFAULT_RANGE, withChecksum = false) {
-  const base = buildDescriptor(params);
+  const base = assertSafeDescriptor(buildDescriptor(params));
   const full = withChecksum ? descriptorWithChecksum(base, network).descriptor : base;
   return {
     desc: full,
@@ -98,7 +109,10 @@ function main(argv) {
         recovery = argv[++i];
         break;
       case '--network':
-        opts.network = argv[++i] || 'signet';
+        {
+          const nextArg = argv[++i];
+          opts.network = nextArg || 'signet';
+        }
         break;
       case '--range':
         opts.range = argv[++i] || DEFAULT_RANGE;
@@ -133,7 +147,7 @@ function main(argv) {
     process.exit(1);
   }
 
-  const baseDescriptor = buildDescriptor({ hotXpub: hot, coldXpub: cold, recoveryXpub: recovery });
+  const baseDescriptor = assertSafeDescriptor(buildDescriptor({ hotXpub: hot, coldXpub: cold, recoveryXpub: recovery }));
   const finalDesc = opts.withChecksum ? descriptorWithChecksum(baseDescriptor, opts.network).descriptor : baseDescriptor;
 
   if (!opts.quiet) {

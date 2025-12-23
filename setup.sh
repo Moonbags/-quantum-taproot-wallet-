@@ -13,17 +13,29 @@ need_cmd bitcoin-cli
 need_cmd jq
 need_cmd node
 
+validate_xpub() {
+  local val="$1"
+  if [[ ! "$val" =~ ^[tx]pub[0-9A-Za-z]+$ ]]; then
+    echo "Invalid xpub format: $val"
+    exit 1
+  fi
+}
+
 echo "=== Quantum Taproot Wallet (NUMS internal key disables key-path) ==="
 read -rp "Hot xpub (m/86'/{net}'/0'/0/0): " HOT
 read -rp "Cold xpub (m/86'/{net}'/0'/0/1): " COLD
 read -rp "Recovery xpub (m/86'/{net}'/0'/1/0): " RECOV
 read -rp "Network [signet/testnet/mainnet] (default: signet): " NET
 
+validate_xpub "$HOT"
+validate_xpub "$COLD"
+validate_xpub "$RECOV"
+
 NET=${NET:-signet}
 case "$NET" in
   signet) EXTRA="--signet" ;;
   testnet) EXTRA="--testnet" ;;
-  mainnet|"") EXTRA="" ;;
+  mainnet) EXTRA="" ;;
   *) echo "Unsupported network: $NET"; exit 1 ;;
 esac
 

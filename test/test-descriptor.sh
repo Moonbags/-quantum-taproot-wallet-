@@ -2,6 +2,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+NUMS_KEY="0250929b74c1a04954b78b4b6035e97a5e078a5a0f28ec96d547bfee9ace803ac0"
 
 HOT="tpubD6NzVbkrYhZ4YRta2zJKR8cGe1nq5Se5g8xyZxWQxjV7qo3Z1dCoWH9kH6SHrwUpBAkLTnX2UjsFvdcGaVbL9DJBSSTXobHxPPH1kN6H9We"
 COLD="tpubD6NzVbkrYhZ4XUf4r8Q4f4fbQ3qykF5NCz7YsYsJhBKt3vnDnNQfX6BxPTsCkXbkNvVKgfH7C9ZwTe74MkRUYw35vjpsXadB1iKsFcEYJIh"
@@ -11,7 +12,9 @@ DESC=$(node "$ROOT/src/descriptors.js" --hot "$HOT" --cold "$COLD" --recovery "$
 
 echo "Descriptor: $DESC"
 
-if [[ "$DESC" != tr(0250929b74c1a04954b78b4b6035e97a5e078a5a0f28ec96d547bfee9ace803ac0* ]]; then
+if [[ "$DESC" == tr(${NUMS_KEY}*) ]]; then
+  :
+else
   echo "NUMS internal key missing"
   exit 1
 fi

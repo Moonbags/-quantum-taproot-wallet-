@@ -25,8 +25,8 @@ function merkleRoot(leaves) {
     for (let i = 0; i < level.length; i += 2) {
       const left = level[i];
       const right = level[i + 1] || level[i]; // duplicate last if odd
-      const ordered = Buffer.compare(left, right) <= 0 ? Buffer.concat([left, right]) : Buffer.concat([right, left]);
-      next.push(sha256(ordered));
+      const [first, second] = Buffer.compare(left, right) <= 0 ? [left, right] : [right, left];
+      next.push(sha256(Buffer.concat([first, second])));
     }
     level = next;
   }
@@ -38,11 +38,16 @@ function commitScripts(scripts) {
 }
 
 function main(argv) {
-  if (argv.length === 0) {
+  const scripts = argv.filter(Boolean);
+  if (scripts.length === 0) {
     console.log('Usage: node src/quantum-vault.js <scriptLeaf1> <scriptLeaf2> ...');
     process.exit(0);
   }
-  const root = commitScripts(argv);
+  if (scripts.some((s) => typeof s !== 'string')) {
+    console.error('Script leaves must be strings');
+    process.exit(1);
+  }
+  const root = commitScripts(scripts);
   console.log(root);
 }
 

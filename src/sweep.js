@@ -7,6 +7,15 @@ const DEFAULT_BATCH_BYTES = 100 * 1024; // keep batches under ~100KB
 const DEFAULT_MAX_INPUTS = 400;
 const DUST_THRESHOLD = 546;
 
+function toSats(value) {
+  const parsed = Number.parseInt(value, 10);
+  return Number.isNaN(parsed) ? 0 : parsed;
+}
+
+function sumValue(inputs) {
+  return inputs.reduce((sum, u) => sum + toSats(u.value || 0), 0);
+}
+
 function planBatches(utxos, {
   maxBatchBytes = DEFAULT_BATCH_BYTES,
   maxInputs = DEFAULT_MAX_INPUTS,
@@ -25,7 +34,7 @@ function planBatches(utxos, {
       batches.push({
         inputs: current,
         estimatedBytes: current.length * approxBytesPerInput,
-        totalValue: current.reduce((sum, u) => sum + Number(u.value || 0), 0),
+        totalValue: sumValue(current),
       });
       current = [];
       currentBytes = 0;
@@ -38,7 +47,7 @@ function planBatches(utxos, {
     batches.push({
       inputs: current,
       estimatedBytes: current.length * approxBytesPerInput,
-      totalValue: current.reduce((sum, u) => sum + Number(u.value || 0), 0),
+      totalValue: sumValue(current),
     });
   }
 
@@ -50,7 +59,17 @@ function main(argv) {
     console.log('Usage: node src/sweep.js \'[{"txid":"...","vout":0,"value":100000}]\'');
     process.exit(0);
   }
-  const utxos = JSON.parse(argv[0]);
+  let utxos;
+  try {
+    utxos = JSON.parse(argv[0]);
+  } catch (err) {
+    console.error('Invalid UTXO JSON payload');
+    process.exit(1);
+  }
+  if (!Array.isArray(utxos)) {
+    console.error('UTXO payload must be an array');
+    process.exit(1);
+  }
   const plan = planBatches(utxos);
   console.log(JSON.stringify(plan, null, 2));
 }
@@ -59,4 +78,4 @@ if (require.main === module) {
   main(process.argv.slice(2));
 }
 
-module.exports = { planBatches, APPROX_INPUT_BYTES, DEFAULT_BATCH_BYTES, DEFAULT_MAX_INPUTS, DUST_THRESHOLD };
+module.exports = { planBatches, sumValue, APPROX_INPUT_BYTES, DEFAULT_BATCH_BYTES, DEFAULT_MAX_INPUTS, DUST_THRESHOLD };
