@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build artifacts
+dist/
+build/
+*.pyc
+__pycache__/
+
+# Environment files
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Test outputs
+test-results/
+coverage/
+
+# Wallet data (NEVER commit real keys!)
+*.wallet
+*.keys
+wallets/
+keys/
+
+# Logs
+*.log
+logs/

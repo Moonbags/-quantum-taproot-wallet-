@@ -1,0 +1,29 @@
+{
+  "name": "quantum-taproot-wallet",
+  "version": "0.1.0",
+  "description": "Bitcoin Taproot wallet with quantum-resistant vault features",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "node test/quantum-vault.test.js",
+    "setup": "./setup.sh"
+  },
+  "keywords": [
+    "bitcoin",
+    "taproot",
+    "quantum-resistant",
+    "post-quantum",
+    "merkle-tree",
+    "vault"
+  ],
+  "author": "Moonbags",
+  "license": "MIT",
+  "dependencies": {
+    "bitcoinjs-lib": "^6.1.5",
+    "tiny-secp256k1": "^2.2.3",
+    "bip32": "^4.0.0",
+    "bip39": "^3.1.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
