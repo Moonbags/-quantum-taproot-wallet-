@@ -6,7 +6,7 @@ INTERNAL="0250929b74c1a04954b78b4b6035e97a5e078a5a0f28ec96d547bfee9ace803ac0"
 
 echo "=== Replace these ranged xpubs ==="
 read -p "Hot ranged xpub (e.g., m/86'/1'/0'/0/*): " HOT
-read -p "Cold ranged xpub (e.g., m/86'/1'/0'/1/*): " COLD
+read -p "Cold ranged xpub (e.g., m/86'/1'/0'/1/* for separation): " COLD
 read -p "Recovery ranged xpub (e.g., m/86'/1'/0'/2/*): " RECOV
 read -p "Testnet? (y/N): " TESTNET
 
@@ -26,7 +26,13 @@ DESC="${BASE_DESC}#${CHECKSUM}"
 
 echo "✅ Descriptor: $DESC"
 
-bitcoin-cli $EXTRA -named createwallet wallet_name="qs" disable_private_keys=true blank=true passphrase="" avoid_reuse=true descriptors=true
+bitcoin-cli $EXTRA -named createwallet \
+  wallet_name="qs" \
+  disable_private_keys=true \
+  blank=true \
+  passphrase="" \
+  avoid_reuse=true \
+  descriptors=true
 bitcoin-cli $EXTRA -rpcwallet=qs -named importdescriptors "[{\"desc\":\"$DESC\",\"active\":true,\"range\":[0,999],\"timestamp\":\"now\",\"internal\":false}]"
 
 ADDR=$(bitcoin-cli $EXTRA -rpcwallet=qs -named deriveaddresses descriptor="$DESC" range="[0,0]" | jq -r '.[0]')
