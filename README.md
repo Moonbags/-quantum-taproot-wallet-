@@ -5,8 +5,8 @@ A Bitcoin Taproot wallet setup tool with quantum-resistant features and time-loc
 ## Features
 
 - **NUMS internal key** (0250929...) - no private key exists, forces script-path spends only
-- **2-of-2 multisig** - requires both hot and cold keys OR
-- **Time-locked recovery** - single recovery key after 1008 blocks (~1 week)
+- **2-of-2 multisig** - requires both hot AND cold keys for normal spending
+- **Time-locked recovery** - alternative recovery path using single recovery key after 1008 blocks (~1 week)
 - **Production-ready** for Bitcoin Core 25.0+ on Signet/Mainnet
 
 ## Project Structure
