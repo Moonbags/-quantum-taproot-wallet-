@@ -1,7 +1,32 @@
 #!/bin/bash
-# Quantum Taproot Wallet Setup - NOT FINANCIAL ADVICE. Testnet first.
+# Quantum Taproot Wallet Setup - Full Environment + Dependencies
+# NOT FINANCIAL ADVICE. Testnet first.
 set -euo pipefail  # Exit on error, undefined vars
 
+echo "=== Quantum Taproot Wallet Setup ==="
+echo ""
+
+# Check dependencies
+echo "Checking dependencies..."
+
+if ! command -v node &> /dev/null; then
+    echo "⚠ Node.js not found. Install from: https://nodejs.org/"
+    echo "  Required for quantum vault and benchmark tools"
+fi
+
+if ! command -v bitcoin-cli &> /dev/null; then
+    echo "⚠ bitcoin-cli not found. Install Bitcoin Core from: https://bitcoin.org/en/download"
+    echo "  Required for descriptor wallet operations"
+fi
+
+if ! command -v jq &> /dev/null; then
+    echo "⚠ jq not found. Install with: apt-get install jq (or brew install jq)"
+    echo "  Required for JSON parsing in scripts"
+fi
+
+echo ""
+
+# Default internal key for Taproot
 INTERNAL="0250929b74c1a04954b78b4b6035e97a5e078a5a0f28ec96d547bfee9ace803ac0"
 
 echo "=== Replace these xpubs ==="
