@@ -12,7 +12,7 @@ read -p "Testnet? (y/N): " TESTNET
 
 [[ "$TESTNET" == "y" ]] && EXTRA="--testnet" || EXTRA=""
 
-# 1-of-3 spending: hot or cold immediately, or recovery after 1008 blocks.
+# Immediate spend via hot or cold keys, with timelocked recovery after 1008 blocks.
 RECOVERY_BRANCH="and_v(v:pk_h(${RECOV}),older(1008))"
 COLD_OR_RECOV="or_d(pk_h(${COLD}),${RECOVERY_BRANCH})"
 SCRIPT_TREE="or_d(pk_h(${HOT}),${COLD_OR_RECOV})"
