@@ -1,30 +1,70 @@
 #!/bin/bash
-# Quantum Taproot Wallet Setup - NOT FINANCIAL ADVICE. Testnet first.
-set -euo pipefail  # Exit on error, undefined vars
+# Quantum Taproot Wallet Setup - forces script-path spends via NUMS internal key.
+set -euo pipefail
 
-INTERNAL="0250929b74c1a04954b78b4b6035e97a5e078a5a0f28ec96d547bfee9ace803ac0"
+ROOT="$(cd "$(dirname "$0")" && pwd)"
+NUMS_INTERNAL_KEY="0250929b74c1a04954b78b4b6035e97a5e078a5a0f28ec96d547bfee9ace803ac0"
 
-echo "=== Replace these xpubs ==="
-read -p "Hot xpub (m/86'/1'/0'/0/0): " HOT
-read -p "Cold xpub (m/86'/1'/0'/0/1): " COLD  
-read -p "Recovery xpub (m/86'/1'/0'/1/0): " RECOV
-read -p "Testnet? (y/N): " TESTNET
+need_cmd() {
+  command -v "$1" >/dev/null 2>&1 || { echo "Missing dependency: $1"; exit 1; }
+}
 
-[[ "$TESTNET" == "y" ]] && EXTRA="--testnet" || EXTRA=""
+need_cmd bitcoin-cli
+need_cmd jq
+need_cmd node
 
-BASE_DESC="tr(${INTERNAL},{or_d(pk_h(${HOT}),pk_h(${COLD}),and_v(v:pk_h(${RECOV}),older(1008)))})"
+validate_xpub() {
+  local val="$1"
+  if [[ ! "$val" =~ ^[tx]pub[0-9A-Za-z]+$ ]]; then
+    echo "Invalid xpub format: $val"
+    exit 1
+  fi
+}
 
-echo "Validating descriptor..."
-bitcoin-cli $EXTRA getdescriptorinfo "$BASE_DESC" || { echo "Invalid descriptor"; exit 1; }
+echo "=== Quantum Taproot Wallet (NUMS internal key disables key-path) ==="
+read -rp "Hot xpub (m/86'/{net}'/0'/0/0): " HOT
+read -rp "Cold xpub (m/86'/{net}'/0'/0/1): " COLD
+read -rp "Recovery xpub (m/86'/{net}'/0'/1/0): " RECOV
+read -rp "Network [signet/testnet/mainnet] (default: signet): " NET
 
-CHECKSUM=$(bitcoin-cli $EXTRA getdescriptorinfo "$BASE_DESC" | jq -r '.checksum')
-DESC="${BASE_DESC}#${CHECKSUM}"
+validate_xpub "$HOT"
+validate_xpub "$COLD"
+validate_xpub "$RECOV"
 
-echo "✅ Descriptor: $DESC"
+NET=${NET:-signet}
+case "$NET" in
+  signet) EXTRA="--signet" ;;
+  testnet) EXTRA="--testnet" ;;
+  mainnet) EXTRA="" ;;
+  *) echo "Unsupported network: $NET"; exit 1 ;;
+esac
 
-bitcoin-cli $EXTRA createwallet "qs" true true false true false
-bitcoin-cli $EXTRA -rpcwallet=qs -named importdescriptors "[{\"desc\":\"$DESC\",\"active\":true,\"range\":[0,999],\"timestamp\":\"now\",\"internal\":false}]"
+DESC=$(node "$ROOT/src/descriptors.js" --hot "$HOT" --cold "$COLD" --recovery "$RECOV" --network "$NET" --range "[0,999]" --with-checksum)
 
-ADDR=$(bitcoin-cli $EXTRA -rpcwallet=qs -named deriveaddresses descriptor="$DESC" range="[0,0]" | jq -r '.[0]')
+if [[ -z "$DESC" ]]; then
+  echo "Descriptor generation failed"
+  exit 1
+fi
+
+echo "✅ Descriptor (script-path only): $DESC"
+
+WALLET="qs-${NET}"
+bitcoin-cli $EXTRA createwallet "$WALLET" true true false true false >/dev/null || true
+
+IMPORT_JSON=$(cat <<EOF
+[{
+  "desc": "$DESC",
+  "active": true,
+  "range": [0,999],
+  "timestamp": "now",
+  "internal": false
+}]
+EOF
+)
+
+bitcoin-cli $EXTRA -rpcwallet="$WALLET" importdescriptors "$IMPORT_JSON" >/dev/null
+
+ADDR=$(bitcoin-cli $EXTRA -rpcwallet="$WALLET" deriveaddresses "$DESC" "[0,0]" | jq -r '.[0]')
 echo "💰 Fund this address: $ADDR"
 echo "📋 Save descriptor: $DESC"
+echo "⏳ Recovery path: older(1008) with recovery key"
