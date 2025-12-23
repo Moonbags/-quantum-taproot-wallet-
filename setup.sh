@@ -26,16 +26,7 @@ DESC="${BASE_DESC}#${CHECKSUM}"
 
 echo "✅ Descriptor: $DESC"
 
-CREATEWALLET_ARGS=(
-  -named createwallet
-  wallet_name="qs"
-  disable_private_keys=true
-  blank=true
-  passphrase=""
-  avoid_reuse=true
-  descriptors=true
-)
-bitcoin-cli $EXTRA "${CREATEWALLET_ARGS[@]}"
+bitcoin-cli $EXTRA -named createwallet wallet_name="qs" disable_private_keys=true blank=true passphrase="" avoid_reuse=true descriptors=true
 bitcoin-cli $EXTRA -rpcwallet=qs -named importdescriptors "[{\"desc\":\"$DESC\",\"active\":true,\"range\":[0,999],\"timestamp\":\"now\",\"internal\":false}]"
 
 ADDR=$(bitcoin-cli $EXTRA -rpcwallet=qs -named deriveaddresses descriptor="$DESC" range="[0,0]" | jq -r '.[0]')
