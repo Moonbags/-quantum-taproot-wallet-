@@ -2,6 +2,13 @@
 
 A Bitcoin Taproot wallet setup tool with quantum-resistant features and time-locked recovery options.
 
+## Features
+
+- **NUMS internal key** (0250929...) - no private key exists, forces script-path spends only
+- **2-of-2 multisig** - requires both hot and cold keys OR
+- **Time-locked recovery** - single recovery key after 1008 blocks (~1 week)
+- **Production-ready** for Bitcoin Core 25.0+ on Signet/Mainnet
+
 ## Project Structure
 
 ```
@@ -17,10 +24,39 @@ quantum-taproot-wallet/
 
 ## Setup
 
-Run the setup script to configure your quantum taproot wallet:
+### Prerequisites
 
-```bash
-./setup.sh
-```
+- Bitcoin Core 25.0+ with Signet enabled
+- Ensure `signet=1` in your `bitcoin.conf`
+- Synced Signet node
 
-⚠️ **NOT FINANCIAL ADVICE. Test on testnet first.**
+### Local Test Steps
+
+1. Ensure Bitcoin Core is running on Signet:
+   ```bash
+   bitcoin-cli -signet getblockchaininfo
+   ```
+
+2. Make the script executable and run it:
+   ```bash
+   chmod +x setup.sh
+   ./setup.sh
+   ```
+
+3. Fund the generated address using a Signet faucet:
+   - https://signetfaucet.com
+   - https://hoodscan.com/faucet
+
+4. Verify balance:
+   ```bash
+   bitcoin-cli -rpcwallet=qs getbalance
+   ```
+
+## Security
+
+- Taproot-compatible with quantum-resistant NUMS internal key
+- Key-path spending is impossible (no private key for internal key)
+- All spends reveal script-path with proper signatures
+- Time-locked recovery mechanism for emergency access
+
+⚠️ **NOT FINANCIAL ADVICE. Test on Signet first.**
