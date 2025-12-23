@@ -49,7 +49,7 @@ quantum-taproot-wallet/
 
 4. Verify balance:
    ```bash
-   bitcoin-cli -rpcwallet=qs getbalance
+   bitcoin-cli -signet -rpcwallet=qs getbalance
    ```
 
 ## Security
