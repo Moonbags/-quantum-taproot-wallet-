@@ -1,0 +1,21 @@
+{
+  "name": "quantum-taproot-wallet",
+  "version": "0.1.0",
+  "description": "Taproot wallet helper that forces script-path spends with a NUMS internal key.",
+  "main": "src/descriptors.js",
+  "scripts": {
+    "selftest": "node src/descriptors.js --selftest --quiet",
+    "security-audit": "node security-audit.js",
+    "test": "npm run selftest"
+  },
+  "keywords": [
+    "taproot",
+    "bitcoin",
+    "quantum-resistant"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  }
+}
