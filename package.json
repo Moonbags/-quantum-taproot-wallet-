@@ -5,7 +5,9 @@
   "main": "src/index.js",
   "scripts": {
     "test": "node test/quantum-vault.test.js",
-    "setup": "./setup.sh"
+    "setup": "./setup.sh",
+    "demo": "node examples/demo.js",
+    "verify": "./test/verify.sh"
   },
   "keywords": [
     "bitcoin",
