@@ -1,0 +1,15 @@
+# Generated PSBT files
+*.psbt
+
+# Bitcoin wallet files
+*.dat
+*.wallet
+
+# Temporary files
+*.tmp
+*.bak
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
