@@ -1,10 +1,17 @@
 #!/bin/bash
 # Quantum Taproot Wallet Setup - NOT FINANCIAL ADVICE. Testnet first.
+# Version: 1.0.1
 set -euo pipefail  # Exit on error, undefined vars
 
+# NUMS (Nothing-Up-My-Sleeve) internal key - has no known private key.
+# This makes key-path spends impossible, forcing script-path only (quantum-resistant).
 INTERNAL="0250929b74c1a04954b78b4b6035e97a5e078a5a0f28ec96d547bfee9ace803ac0"
 
-echo "=== Replace these xpubs ==="
+echo "=== Quantum Taproot Wallet Setup ==="
+echo "⚠️  WARNING: Store your xpubs safely before proceeding!"
+echo "   (Write them down offline - you need them to recover funds)"
+echo ""
+echo "=== Enter your xpubs ==="
 read -p "Hot xpub (m/86'/1'/0'/0/0): " HOT
 read -p "Cold xpub (m/86'/1'/0'/0/1): " COLD  
 read -p "Recovery xpub (m/86'/1'/0'/1/0): " RECOV
