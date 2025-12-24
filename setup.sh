@@ -2,6 +2,18 @@
 # Quantum Taproot Wallet Setup - NOT FINANCIAL ADVICE. Testnet first.
 set -euo pipefail  # Exit on error, undefined vars
 
+# Dependency check function
+check_deps() {
+  command -v bitcoin-cli >/dev/null || { echo "Install: brew install bitcoin"; exit 1; }
+  command -v jq >/dev/null || { echo "Install: brew install jq"; exit 1; }
+  command -v bc >/dev/null || { echo "Install: brew install bc"; exit 1; }
+  command -v xxd >/dev/null || { echo "Error: xxd not found (should be built-in on macOS). Check your system installation."; exit 1; }
+  echo "✅ All dependencies found"
+}
+
+# Run dependency check
+check_deps
+
 INTERNAL="0250929b74c1a04954b78b4b6035e97a5e078a5a0f28ec96d547bfee9ace803ac0"
 
 echo "=== Replace these xpubs ==="
