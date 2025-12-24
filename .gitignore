@@ -1,0 +1,17 @@
+# Sensitive wallet data - DO NOT COMMIT
+backup/
+*.wallet
+*.dat
+*.log
+
+# Private keys
+*priv*
+*secret*
+
+# PSBTs
+*.psbt
+psbt_*.txt
+
+# OS
+.DS_Store
+Thumbs.db
