@@ -10,16 +10,16 @@ echo ""
 RECOVERY_WALLET="recovery_wallet"
 DEST_ADDR=${1:-""}
 
-read -p "Testnet? (y/N): " TESTNET
+read -rp "Testnet? (y/N): " TESTNET
 [[ "$TESTNET" == "y" ]] && NET="-testnet" || NET=""
 
 if [ -z "$DEST_ADDR" ]; then
-    read -p "Destination address: " DEST_ADDR
+    read -rp "Destination address: " DEST_ADDR
 fi
 
 # Get quantum wallet UTXOs
 echo "Checking quantum wallet UTXOs..."
-UTXOS=$(bitcoin-cli $NET -rpcwallet=qs listunspent)
+UTXOS=$(bitcoin-cli "$NET" -rpcwallet=qs listunspent)
 
 if [ "$UTXOS" == "[]" ]; then
     echo "No UTXOs in quantum wallet."
@@ -50,11 +50,11 @@ SEND_AMT=$(echo "$BALANCE - $FEE" | bc)
 
 echo "Recovering: $SEND_AMT BTC"
 echo "To: $DEST_ADDR"
-read -p "Continue? (y/N): " CONFIRM
+read -rp "Continue? (y/N): " CONFIRM
 [[ "$CONFIRM" != "y" ]] && exit 0
 
 # Create PSBT from quantum wallet
-PSBT=$(bitcoin-cli $NET -rpcwallet=qs walletcreatefundedpsbt \
+PSBT=$(bitcoin-cli "$NET" -rpcwallet=qs walletcreatefundedpsbt \
     '[]' \
     "[{\"$DEST_ADDR\": $SEND_AMT}]" \
     0 \
@@ -62,16 +62,16 @@ PSBT=$(bitcoin-cli $NET -rpcwallet=qs walletcreatefundedpsbt \
 
 # Sign with recovery wallet
 echo "Signing with recovery key..."
-SIGNED=$(bitcoin-cli $NET -rpcwallet=$RECOVERY_WALLET walletprocesspsbt "$PSBT" | jq -r '.psbt')
+SIGNED=$(bitcoin-cli "$NET" -rpcwallet=$RECOVERY_WALLET walletprocesspsbt "$PSBT" | jq -r '.psbt')
 
 # Finalize and broadcast
-COMPLETE=$(bitcoin-cli $NET analyzepsbt "$SIGNED" | jq -r '.complete')
+COMPLETE=$(bitcoin-cli "$NET" analyzepsbt "$SIGNED" | jq -r '.complete')
 if [ "$COMPLETE" == "true" ]; then
-    RAWTX=$(bitcoin-cli $NET finalizepsbt "$SIGNED" | jq -r '.hex')
-    TXID=$(bitcoin-cli $NET sendrawtransaction "$RAWTX")
+    RAWTX=$(bitcoin-cli "$NET" finalizepsbt "$SIGNED" | jq -r '.hex')
+    TXID=$(bitcoin-cli "$NET" sendrawtransaction "$RAWTX")
     echo "✅ Recovery transaction broadcast!"
     echo "TXID: $TXID"
 else
     echo "❌ Could not complete PSBT. Check key availability."
-    bitcoin-cli $NET analyzepsbt "$SIGNED"
+    bitcoin-cli "$NET" analyzepsbt "$SIGNED"
 fi

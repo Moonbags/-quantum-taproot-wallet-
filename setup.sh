@@ -10,7 +10,7 @@ echo "╚═══════════════════════�
 echo ""
 
 # Network selection
-read -p "Use Testnet? (Y/n): " TESTNET
+read -rp "Use Testnet? (Y/n): " TESTNET
 [[ "$TESTNET" == "n" ]] && NET="" || NET="-testnet"
 
 # Verify Bitcoin Core
@@ -20,11 +20,11 @@ if ! command -v bitcoin-cli &> /dev/null; then
     exit 1
 fi
 
-VERSION=$(bitcoin-cli $NET --version | head -1)
+VERSION=$(bitcoin-cli "$NET" --version | head -1)
 echo "✅ $VERSION"
 
 # Check if daemon is running
-if ! bitcoin-cli $NET getblockchaininfo &> /dev/null; then
+if ! bitcoin-cli "$NET" getblockchaininfo &> /dev/null; then
     echo "❌ Bitcoin daemon not running. Start with: bitcoind $NET -daemon"
     exit 1
 fi
@@ -35,19 +35,19 @@ echo ""
 echo "Creating key wallets..."
 
 for WALLET in hot_wallet cold_wallet recovery_wallet; do
-    if bitcoin-cli $NET -rpcwallet=$WALLET getwalletinfo &> /dev/null 2>&1; then
+    if bitcoin-cli "$NET" -rpcwallet=$WALLET getwalletinfo &> /dev/null 2>&1; then
         echo "  $WALLET already exists ✓"
     else
-        bitcoin-cli $NET -named createwallet wallet_name="$WALLET" descriptors=true > /dev/null
+        bitcoin-cli "$NET" -named createwallet wallet_name="$WALLET" descriptors=true > /dev/null
         echo "  $WALLET created ✓"
     fi
 done
 
 # Create watch-only quantum wallet
-if bitcoin-cli $NET -rpcwallet=qs getwalletinfo &> /dev/null 2>&1; then
+if bitcoin-cli "$NET" -rpcwallet=qs getwalletinfo &> /dev/null 2>&1; then
     echo "  qs (quantum) already exists ✓"
 else
-    bitcoin-cli $NET -named createwallet wallet_name="qs" disable_private_keys=true blank=true descriptors=true > /dev/null
+    bitcoin-cli "$NET" -named createwallet wallet_name="qs" disable_private_keys=true blank=true descriptors=true > /dev/null
     echo "  qs (quantum) created ✓"
 fi
 
@@ -55,9 +55,9 @@ fi
 echo ""
 echo "Extracting public keys..."
 
-HOT=$(bitcoin-cli $NET -rpcwallet=hot_wallet listdescriptors | jq -r '.descriptors[] | select(.desc | startswith("tr(")) | select(.internal == false) | .desc' | grep -oP 'tpub[A-Za-z0-9]+')
-COLD=$(bitcoin-cli $NET -rpcwallet=cold_wallet listdescriptors | jq -r '.descriptors[] | select(.desc | startswith("tr(")) | select(.internal == false) | .desc' | grep -oP 'tpub[A-Za-z0-9]+')
-RECOV=$(bitcoin-cli $NET -rpcwallet=recovery_wallet listdescriptors | jq -r '.descriptors[] | select(.desc | startswith("tr(")) | select(.internal == false) | .desc' | grep -oP 'tpub[A-Za-z0-9]+')
+HOT=$(bitcoin-cli "$NET" -rpcwallet=hot_wallet listdescriptors | jq -r '.descriptors[] | select(.desc | startswith("tr(")) | select(.internal == false) | .desc' | grep -oP 'tpub[A-Za-z0-9]+')
+COLD=$(bitcoin-cli "$NET" -rpcwallet=cold_wallet listdescriptors | jq -r '.descriptors[] | select(.desc | startswith("tr(")) | select(.internal == false) | .desc' | grep -oP 'tpub[A-Za-z0-9]+')
+RECOV=$(bitcoin-cli "$NET" -rpcwallet=recovery_wallet listdescriptors | jq -r '.descriptors[] | select(.desc | startswith("tr(")) | select(.internal == false) | .desc' | grep -oP 'tpub[A-Za-z0-9]+')
 
 echo "  HOT:      ${HOT:0:20}..."
 echo "  COLD:     ${COLD:0:20}..."
@@ -72,7 +72,7 @@ DESC="tr(${INTERNAL},{{pk(${HOT}/0/*),pk(${COLD}/0/*)},and_v(v:pk(${RECOV}/0/*),
 
 echo ""
 echo "Validating descriptor..."
-RESULT=$(bitcoin-cli $NET getdescriptorinfo "$DESC")
+RESULT=$(bitcoin-cli "$NET" getdescriptorinfo "$DESC")
 CHECKSUM=$(echo "$RESULT" | jq -r '.checksum')
 ISSOLVABLE=$(echo "$RESULT" | jq -r '.issolvable')
 
@@ -87,7 +87,7 @@ echo "✅ Checksum: $CHECKSUM"
 # Import to quantum wallet
 echo ""
 echo "Importing descriptor to quantum wallet..."
-IMPORT_RESULT=$(bitcoin-cli $NET -rpcwallet=qs importdescriptors "[{\"desc\":\"$FULL_DESC\",\"active\":true,\"range\":[0,999],\"timestamp\":\"now\"}]")
+IMPORT_RESULT=$(bitcoin-cli "$NET" -rpcwallet=qs importdescriptors "[{\"desc\":\"$FULL_DESC\",\"active\":true,\"range\":[0,999],\"timestamp\":\"now\"}]")
 SUCCESS=$(echo "$IMPORT_RESULT" | jq -r '.[0].success')
 
 if [ "$SUCCESS" != "true" ]; then
@@ -98,7 +98,7 @@ fi
 echo "✅ Descriptor imported"
 
 # Derive address
-ADDR=$(bitcoin-cli $NET deriveaddresses "$FULL_DESC" "[0,0]" | jq -r '.[0]')
+ADDR=$(bitcoin-cli "$NET" deriveaddresses "$FULL_DESC" "[0,0]" | jq -r '.[0]')
 
 # Summary
 echo ""
