@@ -71,3 +71,81 @@ rpcuser=quantum
 rpcpassword=quantum123
 rpcallowip=127.0.0.1
 rpcport=18332
+EOF
+```
+
+### 3. Setup Quantum Wallet
+
+```bash
+./setup.sh
+```
+
+## 🧪 Testing Infrastructure
+
+Multi-network testing framework for development and validation across different environments.
+
+### Quick Test Runner
+
+```bash
+./test_runner.sh
+```
+
+Select from:
+1. **REGTEST** - Isolated script iteration (fastest development)
+2. **CUSTOM SIGNET** - Edge case testing (requires docker)
+3. **PUBLIC SIGNET** - Stable PSBT finalization
+4. **TESTNET4** - Adversarial spam (final pre-mainnet)
+
+### Individual Test Scripts
+
+```bash
+# Regtest - Fast iteration
+./test_regtest.sh
+
+# Custom Signet - Edge cases (docker required)
+docker run -it --name custom-signet -p 38332:38332 nbd-wtf/signet:custom
+./test_custom_signet.sh
+
+# Public Signet - Stable testing
+./test_public_signet.sh
+
+# Testnet4 - Final validation
+./test_testnet4.sh
+```
+
+### Test Network Features
+
+| Network | Speed | Use Case | Faucet |
+|---------|-------|----------|--------|
+| **REGTEST** | Instant | Rapid development | Self-generated |
+| **CUSTOM SIGNET** | Fast | Edge cases, spam floods | Self-generated |
+| **PUBLIC SIGNET** | Real-time | Stable PSBT testing | [signetfaucet.com](https://signetfaucet.com) |
+| **TESTNET4** | Real-time | Adversarial testing | [faucet.testnet4.dev](https://faucet.testnet4.dev) |
+
+📖 **Full Testing Documentation**: See [TESTING.md](TESTING.md) for detailed setup, commands, and troubleshooting.
+
+## 📚 Usage
+
+### Check Balance
+
+```bash
+./check_balance.sh <address>
+```
+
+### Spend Funds
+
+```bash
+./spend.sh
+```
+
+### Recovery (After 1008 blocks)
+
+```bash
+./recovery.sh <destination_address>
+```
+
+## 🔗 Resources
+
+- **Verification Report**: [VERIFICATION.md](VERIFICATION.md)
+- **Testing Guide**: [TESTING.md](TESTING.md)
+- **Blockchain Explorer**: [mempool.space](https://mempool.space)
