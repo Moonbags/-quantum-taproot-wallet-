@@ -140,7 +140,9 @@ print(research['analysis'])
 ./dexter_cli.sh "Optimal Bitcoin transaction timing based on mempool"
 ```
 
-📚 **[Complete Dexter Integration Guide →](DEXTER_INTEGRATION.md)**
+📚 **Documentation:**
+- **[Quick Start (5 min) →](QUICKSTART.md)** - Get up and running quickly
+- **[Complete Integration Guide →](DEXTER_INTEGRATION.md)** - Full reference and advanced usage
 
 ---
 
