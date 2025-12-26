@@ -1,0 +1,22 @@
+[project]
+name = "quantum-taproot-wallet-dexter"
+version = "1.0.0"
+description = "Quantum Taproot Wallet with Dexter financial analysis integration"
+requires-python = ">=3.10"
+dependencies = [
+    "openai>=1.0.0",
+    "python-dotenv>=1.0.0",
+    "pandas>=2.0.0",
+    "requests>=2.31.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=7.0.0",
+    "ipython>=8.0.0",
+    "jupyter>=1.0.0",
+]
