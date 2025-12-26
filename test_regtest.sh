@@ -46,9 +46,9 @@ fi
 echo ""
 echo "Extracting public keys..."
 
-HOT=$(bitcoin-cli "$NET" -rpcwallet=hot_wallet listdescriptors | jq -r '.descriptors[] | select(.desc | startswith("tr(")) | select(.internal == false) | .desc' | grep -oP 'tpub[A-Za-z0-9]+')
-COLD=$(bitcoin-cli "$NET" -rpcwallet=cold_wallet listdescriptors | jq -r '.descriptors[] | select(.desc | startswith("tr(")) | select(.internal == false) | .desc' | grep -oP 'tpub[A-Za-z0-9]+')
-RECOV=$(bitcoin-cli "$NET" -rpcwallet=recovery_wallet listdescriptors | jq -r '.descriptors[] | select(.desc | startswith("tr(")) | select(.internal == false) | .desc' | grep -oP 'tpub[A-Za-z0-9]+')
+HOT=$(bitcoin-cli "$NET" -rpcwallet=hot_wallet listdescriptors | jq -r '.descriptors[] | select(.desc | startswith("tr(")) | select(.internal == false) | .desc' | sed -E 's/.*](tpub[^/]+).*/\1/')
+COLD=$(bitcoin-cli "$NET" -rpcwallet=cold_wallet listdescriptors | jq -r '.descriptors[] | select(.desc | startswith("tr(")) | select(.internal == false) | .desc' | sed -E 's/.*](tpub[^/]+).*/\1/')
+RECOV=$(bitcoin-cli "$NET" -rpcwallet=recovery_wallet listdescriptors | jq -r '.descriptors[] | select(.desc | startswith("tr(")) | select(.internal == false) | .desc' | sed -E 's/.*](tpub[^/]+).*/\1/')
 
 echo "  HOT:      ${HOT:0:20}..."
 echo "  COLD:     ${COLD:0:20}..."
@@ -80,13 +80,48 @@ MINER_ADDR=$(bitcoin-cli "$NET" -rpcwallet=hot_wallet getnewaddress)
 bitcoin-cli "$NET" generatetoaddress 101 "$MINER_ADDR" > /dev/null
 echo "✅ 101 blocks generated (mature coinbase)"
 
+# Generate a few more blocks for fee estimation
+bitcoin-cli "$NET" generatetoaddress 5 "$MINER_ADDR" > /dev/null
+
 # Fund quantum address
 echo ""
 echo "Funding quantum address..."
-FUND_AMT=0.001
-bitcoin-cli "$NET" -rpcwallet=hot_wallet sendtoaddress "$QUANTUM_ADDR" "$FUND_AMT" > /dev/null
-bitcoin-cli "$NET" generatetoaddress 1 "$MINER_ADDR" > /dev/null
-echo "✅ Funded $FUND_AMT BTC to quantum address"
+CURRENT_BALANCE=$(bitcoin-cli "$NET" -rpcwallet=qs getbalance 2>/dev/null || echo "0")
+if (( $(echo "$CURRENT_BALANCE > 0" | bc -l) )); then
+    echo "✅ Quantum wallet already funded ($CURRENT_BALANCE BTC)"
+else
+    FUND_AMT=0.00099
+    FEE_AMT=0.00001
+    # Get UTXO details
+    UTXO_DATA=$(bitcoin-cli "$NET" -rpcwallet=hot_wallet listunspent | jq -r '.[0]')
+    if [ -n "$UTXO_DATA" ] && [ "$UTXO_DATA" != "null" ]; then
+        TXID_UTXO=$(echo "$UTXO_DATA" | jq -r '.txid')
+        VOUT_UTXO=$(echo "$UTXO_DATA" | jq -r '.vout')
+        UTXO_AMT=$(echo "$UTXO_DATA" | jq -r '.amount')
+        CHANGE_AMT=$(echo "$UTXO_AMT - $FUND_AMT - $FEE_AMT" | bc)
+        CHANGE_ADDR=$(bitcoin-cli "$NET" -rpcwallet=hot_wallet getnewaddress)
+        
+        # Create transaction with explicit inputs, outputs, and change
+        if (( $(echo "$CHANGE_AMT > 0" | bc -l) )); then
+            RAW=$(bitcoin-cli "$NET" createrawtransaction \
+                "[{\"txid\":\"$TXID_UTXO\",\"vout\":$VOUT_UTXO}]" \
+                "[{\"$QUANTUM_ADDR\":$FUND_AMT},{\"$CHANGE_ADDR\":$CHANGE_AMT}]")
+        else
+            # No change, send everything minus fee
+            SEND_AMT=$(echo "$UTXO_AMT - $FEE_AMT" | bc)
+            RAW=$(bitcoin-cli "$NET" createrawtransaction \
+                "[{\"txid\":\"$TXID_UTXO\",\"vout\":$VOUT_UTXO}]" \
+                "[{\"$QUANTUM_ADDR\":$SEND_AMT}]")
+        fi
+        
+        SIGNED=$(bitcoin-cli "$NET" -rpcwallet=hot_wallet signrawtransactionwithwallet "$RAW" | jq -r '.hex')
+        TXID=$(bitcoin-cli "$NET" sendrawtransaction "$SIGNED")
+        bitcoin-cli "$NET" generatetoaddress 1 "$MINER_ADDR" > /dev/null
+        echo "✅ Funded to quantum address (TX: ${TXID:0:16}...)"
+    else
+        echo "⚠️  No UTXOs available for funding"
+    fi
+fi
 
 # Check balance
 BALANCE=$(bitcoin-cli "$NET" -rpcwallet=qs getbalance)
