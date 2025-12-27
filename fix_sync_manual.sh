@@ -1,0 +1,36 @@
+#!/bin/bash
+# Manual testnet sync fix - run this in your terminal
+# This script provides commands you can copy/paste
+
+echo "╔════════════════════════════════════════════════════════════╗"
+echo "║         MANUAL TESTNET SYNC FIX                            ║"
+echo "╚════════════════════════════════════════════════════════════╝"
+echo ""
+echo "Copy and paste these commands one by one:"
+echo ""
+echo "1. Stop the daemon (if running):"
+echo "   bitcoin-cli -testnet stop"
+echo ""
+echo "2. Wait 5 seconds, then restart:"
+echo "   bitcoind -testnet -daemon -txindex -maxconnections=32"
+echo ""
+echo "3. Wait 30 seconds, then check status:"
+echo "   bitcoin-cli -testnet getblockchaininfo | jq '{blocks, headers, verificationprogress}'"
+echo ""
+echo "4. Monitor sync progress:"
+echo "   watch -n 10 'bitcoin-cli -testnet getblockchaininfo | jq \"{blocks, headers, verificationprogress}\"'"
+echo ""
+echo "If blocks still don't increase, try:"
+echo ""
+echo "5. Check connections:"
+echo "   bitcoin-cli -testnet getnetworkinfo | jq '{connections, networkactive}'"
+echo ""
+echo "6. Add seed nodes manually:"
+echo "   bitcoin-cli -testnet addnode testnet-seed.bitcoin.sprovoost.nl onetry"
+echo "   bitcoin-cli -testnet addnode seed.tbtc.petertodd.org onetry"
+echo ""
+echo "7. Check logs for errors:"
+echo "   tail -20 ~/.bitcoin/testnet3/debug.log | grep -i error"
+echo ""
+
+
