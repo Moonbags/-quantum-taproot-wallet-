@@ -335,12 +335,15 @@ bitcoin-cli -regtest generatetoaddress 101 $(bitcoin-cli -regtest getnewaddress)
 
 Track test results across networks:
 
-| Network | Wallet Creation | Funding | PSBT | Script-Path | Timelock |
-|---------|----------------|---------|------|-------------|----------|
-| REGTEST | ✅ | ✅ | ✅ | ✅ | ✅ |
-| CUSTOM SIGNET | ✅ | ✅ | ✅ | ✅ | ✅ |
-| PUBLIC SIGNET | ✅ | ✅ | ✅ | ✅ | ✅ |
-| TESTNET4 | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Network | Wallet Creation | Funding | PSBT | Script-Path | Timelock | Status |
+|---------|----------------|---------|------|-------------|----------|--------|
+| **TESTNET** | ✅ | ✅ | ✅ | ✅ | ✅ | **VERIFIED** ✅ |
+| **REGTEST** | ✅ | ✅ | ✅ | ✅ | ✅ | **VERIFIED** ✅ |
+| CUSTOM SIGNET | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ | Not Verified |
+| PUBLIC SIGNET | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ | Not Verified |
+| TESTNET4 | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ | Not Verified |
+
+**Note**: Only TESTNET (regular testnet) has been fully verified. See [VERIFICATION.md](VERIFICATION.md) for details.
 
 ---
 

@@ -124,6 +124,8 @@ docker run -it --name custom-signet -p 38332:38332 nbd-wtf/signet:custom
 
 📖 **Full Testing Documentation**: See [TESTING.md](TESTING.md) for detailed setup, commands, and troubleshooting.
 
+📊 **Verification Status**: See [VERIFICATION_STATUS.md](VERIFICATION_STATUS.md) for current test status across all networks.
+
 ## 📚 Usage
 
 ### Check Balance
