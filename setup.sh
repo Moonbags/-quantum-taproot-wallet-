@@ -7,7 +7,7 @@ check_deps() {
   command -v bitcoin-cli >/dev/null || { echo "Install: brew install bitcoin"; exit 1; }
   command -v jq >/dev/null || { echo "Install: brew install jq"; exit 1; }
   command -v bc >/dev/null || { echo "Install: brew install bc"; exit 1; }
-  command -v xxd >/dev/null || { echo "Error: xxd not found (should be built-in on macOS). Check your system installation."; exit 1; }
+  command -v xxd >/dev/null || { echo "Install: brew install xxd"; exit 1; }
   echo "✅ All dependencies found"
 }
 
