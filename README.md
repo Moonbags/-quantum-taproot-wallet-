@@ -25,8 +25,7 @@ brew update
 brew install \
   bitcoin \
   jq \
-  bc \
-  xxd  # already included in macOS but ensuring availability
+  bc
 
 # Verify installations
 bitcoin-cli -testnet getblockchaininfo  # should connect
