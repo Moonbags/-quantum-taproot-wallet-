@@ -12,6 +12,9 @@ on:
       - '**.sh'
       - '.github/workflows/shell-tests.yml'
 
+permissions:
+  contents: read
+
 env:
   EXCLUDE_PATHS: "./bdk/* ./bdk-cli/* ./rust-bitcoin/* ./rust-miniscript/*"
 

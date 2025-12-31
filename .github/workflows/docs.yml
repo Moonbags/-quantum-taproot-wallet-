@@ -12,6 +12,9 @@ on:
       - '**.md'
       - '.github/workflows/docs.yml'
 
+permissions:
+  contents: read
+
 jobs:
   markdown-lint:
     name: Markdown Linting
