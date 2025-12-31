@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  regtest:
+    name: Regtest Integration Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Bitcoin Core
+        run: |
+          # Download Bitcoin Core 28.0
+          cd /tmp
+          wget https://bitcoincore.org/bin/bitcoin-core-28.0/bitcoin-28.0-x86_64-linux-gnu.tar.gz
+          tar -xzf bitcoin-28.0-x86_64-linux-gnu.tar.gz
+          sudo cp bitcoin-28.0/bin/* /usr/local/bin/
+          sudo chmod +x /usr/local/bin/bitcoin*
+          
+          # Verify installation
+          bitcoin-cli --version
+
+      - name: Configure Bitcoin for Regtest
+        run: |
+          mkdir -p ~/.bitcoin
+          cat > ~/.bitcoin/bitcoin.conf << EOF
+          [regtest]
+          rpcuser=quantum
+          rpcpassword=quantum123
+          rpcallowip=127.0.0.1
+          rpcport=18443
+          txindex=1
+          EOF
+
+      - name: Start Bitcoin Regtest Daemon
+        run: |
+          bitcoind -regtest -daemon -txindex
+          # Wait for daemon to start
+          sleep 5
+          # Verify daemon is running
+          bitcoin-cli -regtest getblockchaininfo
+
+      - name: Run Regtest Tests
+        run: |
+          chmod +x test_regtest.sh
+          ./test_regtest.sh
+
+      - name: Stop Bitcoin Daemon
+        if: always()
+        run: |
+          bitcoin-cli -regtest stop || true
+          sleep 2

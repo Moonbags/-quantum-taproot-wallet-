@@ -1,0 +1,45 @@
+name: Shell Script Tests
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - '**.sh'
+      - '.github/workflows/shell-tests.yml'
+  pull_request:
+    branches: [ main, master ]
+    paths:
+      - '**.sh'
+      - '.github/workflows/shell-tests.yml'
+
+jobs:
+  shellcheck:
+    name: ShellCheck Linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run ShellCheck on all scripts
+        run: |
+          find . -name "*.sh" -not -path "./bdk/*" -not -path "./bdk-cli/*" -not -path "./rust-bitcoin/*" -not -path "./rust-miniscript/*" -print0 | xargs -0 shellcheck --severity=warning
+
+  permissions-check:
+    name: Check Script Permissions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Verify executable permissions
+        run: |
+          echo "Checking executable permissions on shell scripts..."
+          for script in *.sh; do
+            if [ -f "$script" ]; then
+              if [ -x "$script" ]; then
+                echo "✅ $script is executable"
+              else
+                echo "⚠️  $script is not executable"
+              fi
+            fi
+          done
