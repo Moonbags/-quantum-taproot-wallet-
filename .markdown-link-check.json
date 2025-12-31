@@ -1,0 +1,15 @@
+{
+  "ignorePatterns": [
+    {
+      "pattern": "^https://mempool.space"
+    },
+    {
+      "pattern": "^https://bitcoincore.org"
+    }
+  ],
+  "timeout": "20s",
+  "retryOn429": true,
+  "retryCount": 3,
+  "fallbackRetryDelay": "30s",
+  "aliveStatusCodes": [200, 206, 403, 429]
+}
