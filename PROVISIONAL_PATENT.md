@@ -2,9 +2,28 @@
 # Quantum-Resistant Taproot Wallet with Time-Locked Recovery Mechanism
 
 **Application Type**: Provisional Patent Application  
-**Filing Date**: January 2, 2026  
+**Target Filing Date**: January 2, 2026 (adjust as needed)  
 **Inventor**: sha256sol  
 **Status**: CONFIDENTIAL - DO NOT PUBLISH
+
+---
+
+## ⚠️ IMPORTANT CONFIDENTIALITY NOTICE
+
+**This document is provided as a TEMPLATE for preparing a provisional patent application.**
+
+**For Maximum Patent Protection:**
+1. **DO NOT publish or publicly disclose** the detailed technical claims, descriptions, or novel aspects before filing
+2. **This file is in a public repository** for organizational purposes - consider moving sensitive details to a private document before filing
+3. **Public disclosure before filing** can compromise your ability to obtain patent protection in many countries
+4. **Safe approach**: Use this template to prepare your application, but keep the final version with specific claims private until filed
+
+**USPTO Rules:**
+- You have a 12-month grace period in the US after public disclosure
+- Many foreign countries have NO grace period - public disclosure destroys patent rights
+- Provisional filing date establishes priority
+
+**Recommendation**: After filing the provisional patent, you can reference its existence publicly without disclosing specific claims.
 
 ---
 

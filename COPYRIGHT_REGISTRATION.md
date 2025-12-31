@@ -158,7 +158,10 @@ The quantum-taproot-wallet is a Bitcoin wallet implementation that provides:
 ### Step 1: Prepare ZIP File
 
 ```bash
-cd /home/runner/work/-quantum-taproot-wallet-/-quantum-taproot-wallet-
+# Navigate to your local repository directory
+cd /path/to/quantum-taproot-wallet
+
+# Create ZIP file with all relevant files
 zip -r quantum-taproot-wallet-copyright.zip \
   *.sh \
   *.py \

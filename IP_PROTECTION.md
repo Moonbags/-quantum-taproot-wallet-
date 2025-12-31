@@ -59,8 +59,10 @@ This file contains SHA256 hashes of all project files as of December 31, 2025, e
 ### USPTO Provisional Patent
 
 **Cost**: $150 per application  
-**File Date**: January 2, 2026  
+**Target File Date**: January 2, 2026 (adjust as needed)  
 **Keep Private**: Yes (do not publish)
+
+**⚠️ CONFIDENTIALITY WARNING**: The PROVISIONAL_PATENT.md file in this repository is a TEMPLATE. For maximum patent protection, consider keeping your final patent application with specific technical claims in a private document until after filing. Public disclosure of novel claims before filing can compromise patent rights, especially in foreign countries.
 
 #### Patent Title
 
