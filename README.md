@@ -1,5 +1,9 @@
 # Quantum Taproot Wallet
 
+[![CI](https://github.com/Moonbags/-quantum-taproot-wallet-/actions/workflows/ci.yml/badge.svg)](https://github.com/Moonbags/-quantum-taproot-wallet-/actions/workflows/ci.yml)
+[![Shell Tests](https://github.com/Moonbags/-quantum-taproot-wallet-/actions/workflows/shell-tests.yml/badge.svg)](https://github.com/Moonbags/-quantum-taproot-wallet-/actions/workflows/shell-tests.yml)
+[![Documentation](https://github.com/Moonbags/-quantum-taproot-wallet-/actions/workflows/docs.yml/badge.svg)](https://github.com/Moonbags/-quantum-taproot-wallet-/actions/workflows/docs.yml)
+
 A Bitcoin Taproot wallet with quantum-resistant features and time-locked recovery options.
 
 ## ✅ Verified on Testnet - December 24, 2025
