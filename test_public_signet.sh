@@ -1,4 +1,6 @@
 #!/bin/bash
+# Copyright (c) 2025 sha256sol (Moonbags). All rights reserved.
+# Patent pending. Private repository. IP timestamp: 2025-12-31
 # PUBLIC SIGNET - Stable PSBT finalization testing
 # Uses public signet network for realistic testing
 set -euo pipefail
