@@ -20,6 +20,10 @@ jobs:
           # Download Bitcoin Core 28.0
           cd /tmp
           wget https://bitcoincore.org/bin/bitcoin-core-28.0/bitcoin-28.0-x86_64-linux-gnu.tar.gz
+          
+          # Verify SHA256 checksum
+          echo "7fe294b02b25b51acb5c2f3e0a0c69a976efd0dc3a66714d12d0d3db6c72a345  bitcoin-28.0-x86_64-linux-gnu.tar.gz" | sha256sum -c
+          
           tar -xzf bitcoin-28.0-x86_64-linux-gnu.tar.gz
           sudo cp bitcoin-28.0/bin/* /usr/local/bin/
           sudo chmod +x /usr/local/bin/bitcoin*
@@ -30,6 +34,8 @@ jobs:
       - name: Configure Bitcoin for Regtest
         run: |
           mkdir -p ~/.bitcoin
+          # Note: These credentials are only for local regtest environment
+          # Regtest is an isolated test network with no real funds
           cat > ~/.bitcoin/bitcoin.conf << EOF
           [regtest]
           rpcuser=quantum
