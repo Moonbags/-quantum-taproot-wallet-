@@ -1,4 +1,7 @@
 #!/bin/bash
+# Copyright (c) 2025 Moonbags
+# Distributed under the MIT software license, see the accompanying
+# file LICENSE or http://www.opensource.org/licenses/mit-license.php.
 # REGTEST - Isolated script iteration for rapid development
 # Fastest way to test quantum taproot wallet changes
 set -euo pipefail

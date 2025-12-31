@@ -1,4 +1,7 @@
 #!/bin/bash
+# Copyright (c) 2025 Moonbags
+# Distributed under the MIT software license, see the accompanying
+# file LICENSE or http://www.opensource.org/licenses/mit-license.php.
 # PUBLIC SIGNET - Stable PSBT finalization testing
 # Uses public signet network for realistic testing
 set -euo pipefail
