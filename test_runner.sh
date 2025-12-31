@@ -1,4 +1,6 @@
 #!/bin/bash
+# Copyright (c) 2025 sha256sol (Moonbags). All rights reserved.
+# Patent pending. Private repository. IP timestamp: 2025-12-31
 # Multi-network test runner for quantum taproot wallet
 # Supports: regtest, custom signet, public signet, testnet4
 set -euo pipefail

@@ -1,4 +1,6 @@
 #!/bin/bash
+# Copyright (c) 2025 sha256sol (Moonbags). All rights reserved.
+# Patent pending. Private repository. IP timestamp: 2025-12-31
 # Quantum Taproot Wallet - Spend Script
 # Creates and signs PSBT to move funds from source to quantum address
 set -euo pipefail

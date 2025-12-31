@@ -1,4 +1,6 @@
 #!/bin/bash
+# Copyright (c) 2025 sha256sol (Moonbags). All rights reserved.
+# Patent pending. Private repository. IP timestamp: 2025-12-31
 # Recovery Spend - Uses time-locked recovery key after 1008 blocks (~1 week)
 set -euo pipefail
 

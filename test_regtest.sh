@@ -1,4 +1,6 @@
 #!/bin/bash
+# Copyright (c) 2025 sha256sol (Moonbags). All rights reserved.
+# Patent pending. Private repository. IP timestamp: 2025-12-31
 # REGTEST - Isolated script iteration for rapid development
 # Fastest way to test quantum taproot wallet changes
 set -euo pipefail

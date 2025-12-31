@@ -1,4 +1,6 @@
 #!/bin/bash
+# Copyright (c) 2025 sha256sol (Moonbags). All rights reserved.
+# Patent pending. Private repository. IP timestamp: 2025-12-31
 # CUSTOM SIGNET - Edge case testing with custom signet
 # Requires: docker run -it --name custom-signet -p 38332:38332 nbd-wtf/signet:custom
 set -euo pipefail
