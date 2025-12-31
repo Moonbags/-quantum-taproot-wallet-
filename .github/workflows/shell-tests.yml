@@ -12,6 +12,9 @@ on:
       - '**.sh'
       - '.github/workflows/shell-tests.yml'
 
+env:
+  EXCLUDE_PATHS: "./bdk/* ./bdk-cli/* ./rust-bitcoin/* ./rust-miniscript/*"
+
 jobs:
   shellcheck:
     name: ShellCheck Linting
