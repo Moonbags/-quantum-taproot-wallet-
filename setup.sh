@@ -1,4 +1,7 @@
 #!/bin/bash
+# Copyright (c) 2025 Moonbags
+# Distributed under the MIT software license, see the accompanying
+# file LICENSE or http://www.opensource.org/licenses/mit-license.php.
 # Quantum Taproot Wallet Setup - Verified December 24, 2025
 # NOT FINANCIAL ADVICE. Test on testnet first.
 set -euo pipefail

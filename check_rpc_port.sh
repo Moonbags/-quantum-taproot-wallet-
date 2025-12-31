@@ -1,4 +1,7 @@
 #!/bin/bash
+# Copyright (c) 2025 Moonbags
+# Distributed under the MIT software license, see the accompanying
+# file LICENSE or http://www.opensource.org/licenses/mit-license.php.
 # Check RPC port configuration for testnet
 set -euo pipefail
 
