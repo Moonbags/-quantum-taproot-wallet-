@@ -146,8 +146,30 @@ docker run -it --name custom-signet -p 38332:38332 nbd-wtf/signet:custom
 ./recovery.sh <destination_address>
 ```
 
+## 📈 Market Trend Analysis System
+
+This repository now includes an advanced **Market Trend Analysis System** inspired by the LeanAgent framework:
+
+- **Master/Sub-Agent Architecture**: Hierarchical decision-making with specialized agents
+- **Lifelong Learning**: Continuous improvement through experience replay
+- **Multimodal Data Processing**: Efficient handling of price, volume, sentiment, and technical data
+- **Pattern Recognition**: Advanced trend detection and market pattern identification
+
+### Quick Start
+
+```bash
+# Run the market analysis example
+python3 market_analysis_example.py
+
+# Run the test suite
+python3 test_market_analysis.py
+```
+
+📖 **Full Documentation**: See [MARKET_ANALYSIS.md](MARKET_ANALYSIS.md) for detailed usage and API reference.
+
 ## 🔗 Resources
 
 - **Verification Report**: [VERIFICATION.md](VERIFICATION.md)
 - **Testing Guide**: [TESTING.md](TESTING.md)
+- **Market Analysis**: [MARKET_ANALYSIS.md](MARKET_ANALYSIS.md)
 - **Blockchain Explorer**: [mempool.space](https://mempool.space)
