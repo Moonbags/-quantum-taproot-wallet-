@@ -168,7 +168,7 @@ class LifelongLearningSystem:
             timestamp = datetime.fromisoformat(experience['timestamp'])
             age_seconds = (datetime.now() - timestamp).total_seconds()
             recency_score = 1.0 / (1.0 + age_seconds / 3600)  # Decay over hours
-        except:
+        except (ValueError, KeyError, TypeError):
             recency_score = 0.5
         
         # Combine scores
@@ -189,7 +189,7 @@ class LifelongLearningSystem:
             batch = self.experience_replay()
         
         if not batch:
-            return {'status': 'no_experiences', 'updates': 0}
+            return {'status': 'no_experiences', 'learning_updates': 0}
         
         learning_results = {
             'batch_size': len(batch),
