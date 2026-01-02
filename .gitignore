@@ -18,3 +18,10 @@ Thumbs.db
 
 # Snyk Security Extension - AI Rules (auto-generated)
 .github/instructions/snyk_rules.instructions.md
+
+# Market Analysis System
+market_analysis/.env
+market_analysis/__pycache__/
+market_analysis/*/__pycache__/
+market_analysis/*/*/__pycache__/
+*.pyc
