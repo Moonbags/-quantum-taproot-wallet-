@@ -151,3 +151,23 @@ docker run -it --name custom-signet -p 38332:38332 nbd-wtf/signet:custom
 - **Verification Report**: [VERIFICATION.md](VERIFICATION.md)
 - **Testing Guide**: [TESTING.md](TESTING.md)
 - **Blockchain Explorer**: [mempool.space](https://mempool.space)
+
+## 📊 Market Trend Analysis System
+
+This repository also includes a **Market Trend Analysis System** - a lightweight AI system for analyzing market trends using master and sub-agent architecture, inspired by the LeanAgent framework's SSSP (Single-Source Shortest Path) approach.
+
+### Features
+
+- **SSSP Algorithm**: Uses Dijkstra's algorithm to navigate knowledge graphs and prioritize high-impact data
+- **Multi-Agent Architecture**: Master agent orchestrates specialized sub-agents for text, vision, and video processing
+- **Lifelong Learning**: Vector database integration for continuous improvement
+- **Multimodal Processing**: Analyzes news, stock prices, charts, and videos
+
+### Quick Start
+
+```bash
+# Run the example
+python3 market_analysis_example.py
+```
+
+For detailed documentation, setup instructions, and API integration guides, see the [Market Analysis README](market_analysis/README.md).
