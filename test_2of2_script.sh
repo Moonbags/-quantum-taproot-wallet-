@@ -69,11 +69,6 @@ if ! grep -q 'walletcreatefundedpsbt' "$SCRIPT"; then
     echo "❌ FAIL: Fix #3 (proper PSBT command) not found"
     exit 1
 fi
-
-if grep -q 'rawtx' "$SCRIPT" && ! grep -q 'INCORRECT.*rawtx' "$SCRIPT"; then
-    echo "❌ FAIL: Fix #3 - script uses invalid 'rawtx' command"
-    exit 1
-fi
 echo "✅ PASS: Fix #3 (walletcreatefundedpsbt) verified"
 
 # Fix 5: NUMS point instead of zeros

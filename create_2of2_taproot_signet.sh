@@ -31,7 +31,7 @@ echo ""
 # Create wallets if they don't exist
 echo "Creating wallets..."
 for WALLET in hot_wallet cold_wallet; do
-    if bitcoin-cli "$NET" -rpcwallet=$WALLET getwalletinfo &> /dev/null 2>&1; then
+    if bitcoin-cli "$NET" -rpcwallet=$WALLET getwalletinfo &> /dev/null; then
         echo "  $WALLET already exists ✓"
     else
         bitcoin-cli "$NET" -named createwallet wallet_name="$WALLET" descriptors=true > /dev/null
@@ -40,7 +40,7 @@ for WALLET in hot_wallet cold_wallet; do
 done
 
 # Create watch-only wallet for the 2-of-2 multisig
-if bitcoin-cli "$NET" -rpcwallet=multisig_2of2 getwalletinfo &> /dev/null 2>&1; then
+if bitcoin-cli "$NET" -rpcwallet=multisig_2of2 getwalletinfo &> /dev/null; then
     echo "  multisig_2of2 already exists ✓"
 else
     bitcoin-cli "$NET" -named createwallet wallet_name="multisig_2of2" disable_private_keys=true blank=true descriptors=true > /dev/null
@@ -94,9 +94,9 @@ echo ""
 
 echo "Building Taproot descriptor..."
 
-# For a 2-of-2 multisig in Taproot, we use multi_a (musig-style) in a script leaf
+# For a 2-of-2 multisig in Taproot, we use multi_a (Tapscript-native multisig)
 # The descriptor format is: tr(internal_key, {script_tree})
-# For 2-of-2: multi_a(2,key1,key2) means 2-of-2 signatures required
+# For 2-of-2: multi_a(2,key1,key2) uses OP_CHECKSIGADD (not MuSig aggregation)
 
 # Build the multisig descriptor using proper Taproot syntax
 # Using derivation paths for both keys

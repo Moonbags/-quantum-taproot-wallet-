@@ -223,7 +223,7 @@ bitcoin-cli -signet getblockchaininfo
 
 | Issue | Wrong Approach | Right Approach |
 |-------|---------------|----------------|
-| Command substitution | `VAR=$(cmd) \| jq` | `VAR=$(cmd \| jq)` |
+| Command substitution | `VAR=$(cmd) | jq` | `VAR=$(cmd | jq)` |
 | Script construction | String concat opcodes | Use descriptors |
 | PSBT creation | `bitcoin-cli rawtx` | `walletcreatefundedpsbt` |
 | Descriptor syntax | `tr(key#tweak)` | `tr(key,{script})` |
