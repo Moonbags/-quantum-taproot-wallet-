@@ -181,6 +181,22 @@ Select from menu:
 3. PUBLIC SIGNET - Stable testing
 4. TESTNET4 - Final validation
 
+### Signet Deployment
+
+Deploy a full quantum taproot wallet on public signet with 2-of-2 multisig and timelock recovery:
+
+```bash
+./deploy_signet.sh
+```
+
+This script:
+- Creates hot/cold/recovery wallets
+- Extracts xpubs from each wallet
+- Builds a taproot descriptor with timelock recovery (1008 blocks)
+- Imports descriptor to watch-only quantum wallet
+- Generates a bech32m funding address
+- Saves wallet backup to `backup/signet_wallet_info.txt`
+
 ### Direct Network Testing
 
 ```bash
@@ -195,6 +211,9 @@ Select from menu:
 
 # Testnet4
 ./test_testnet4.sh
+
+# Signet Deployment
+./deploy_signet.sh
 ```
 
 ---

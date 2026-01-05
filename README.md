@@ -111,6 +111,9 @@ docker run -it --name custom-signet -p 38332:38332 nbd-wtf/signet:custom
 
 # Testnet4 - Final validation
 ./test_testnet4.sh
+
+# Signet Deployment - Full wallet with 2-of-2 multisig + timelock
+./deploy_signet.sh
 ```
 
 ### Test Network Features
