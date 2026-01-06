@@ -147,8 +147,9 @@ echo "════════════════════════�
 echo "STEP 3: Computing double SHA256 commitment hash"
 echo "═══════════════════════════════════════════════════════════════"
 
-# Build the script string for hashing
-SCRIPT_STRING="or_d(multi_a(2,${HOT_XPUB}/0/*,${COLD_XPUB}/0/*),and_v(v:pk(${RECOV_XPUB}/0/*),older(${TIMELOCK})))"
+# Build the script string for hashing - matches the tree structure in the descriptor
+# The descriptor tree is: {{pk(hot),pk(cold)},and_v(v:pk(recovery),older(1008))}
+SCRIPT_STRING="{{pk(${HOT_XPUB}/0/*),pk(${COLD_XPUB}/0/*)},and_v(v:pk(${RECOV_XPUB}/0/*),older(${TIMELOCK}))}"
 
 # Compute double SHA256 (SHA256(SHA256(script)))
 FIRST_HASH=$(echo -n "$SCRIPT_STRING" | openssl dgst -sha256 -binary | xxd -p -c 256)
