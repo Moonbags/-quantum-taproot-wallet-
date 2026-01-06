@@ -1,4 +1,6 @@
 #!/bin/bash
+# Copyright (c) 2025 sha256sol (Moonbags). All rights reserved.
+# Patent pending. Private repository. IP timestamp: 2025-12-31
 # Quick balance check via mempool.space API (no sync needed)
 
 ADDR=${1:-"tb1py4kh2gxusds4mk4yuxjl9m5dmazvjcnrfj6u8mn7mwd5wy90uhxqvmqrrc"}

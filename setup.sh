@@ -1,4 +1,6 @@
 #!/bin/bash
+# Copyright (c) 2025 sha256sol (Moonbags). All rights reserved.
+# Patent pending. Private repository. IP timestamp: 2025-12-31
 # Quantum Taproot Wallet Setup - Verified December 24, 2025
 # NOT FINANCIAL ADVICE. Test on testnet first.
 set -euo pipefail

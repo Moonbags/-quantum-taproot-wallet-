@@ -1,4 +1,6 @@
 #!/bin/bash
+# Copyright (c) 2025 sha256sol (Moonbags). All rights reserved.
+# Patent pending. Private repository. IP timestamp: 2025-12-31
 # Fix testnet sync issues
 set -euo pipefail
 
