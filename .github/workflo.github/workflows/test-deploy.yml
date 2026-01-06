@@ -1,0 +1,69 @@
+name: Signet Deployment Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  test-deploy:
+    runs-on: ubuntu-latest
+    
+    # Define the Custom Signet node as a service
+    services:
+      bitcoind:
+        image: nbd-wtf/signet:custom
+        ports:
+          - 38332:38332
+        # Health check to ensure node is ready before steps run
+        options: >-
+          --health-cmd "bitcoin-cli -signet -rpcuser=quantum -rpcpassword=quantum123 -rpcport=38332 getblockchaininfo"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq python3 curl
+
+      - name: Install Bitcoin CLI
+        # Downloads static binary to avoid compiling
+        run: |
+          BITCOIN_VERSION=25.0
+          curl -SLO https://bitcoincore.org/bin/bitcoin-core-${BITCOIN_VERSION}/bitcoin-${BITCOIN_VERSION}-x86_64-linux-gnu.tar.gz
+          tar -xzf bitcoin-${BITCOIN_VERSION}-x86_64-linux-gnu.tar.gz
+          sudo install -m 0755 bitcoin-${BITCOIN_VERSION}/bin/bitcoin-cli /usr/local/bin/bitcoin-cli
+          rm -rf bitcoin-${BITCOIN_VERSION}*
+
+      - name: Configure Bitcoin CLI
+        # Set up local config so scripts don't need excessive flags
+        run: |
+          mkdir -p ~/.bitcoin
+          cat <<EOF > ~/.bitcoin/bitcoin.conf
+          [signet]
+          rpcuser=quantum
+          rpcpassword=quantum123
+          rpcport=38332
+          EOF
+
+      - name: Run Deployment Script
+        # Point to the service container (localhost inside the runner)
+        env:
+          BITCOIN_NET: signet
+        run: |
+          chmod +x deploy_signet.sh
+          # Pass 'custom' flag or modify script to use specific RPC port if hardcoded
+          # This assumes your script respects ~/.bitcoin/bitcoin.conf
+          ./deploy_signet.sh
+
+      - name: Archive Wallet Backup
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: signet-wallet-backup
+          path: backup/signet_wallet_info.txt
+          retention-days: 5
