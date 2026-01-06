@@ -166,8 +166,17 @@ docker run -it --name custom-signet -p 38332:38332 nbd-wtf/signet:custom
 ./recovery.sh <destination_address>
 ```
 
+### 2-of-2 Multisig Taproot (Signet)
+
+```bash
+./create_2of2_taproot_signet.sh
+```
+
+This creates a true 2-of-2 multisig Taproot wallet on Bitcoin Signet. See [FIXES.md](FIXES.md) for implementation details and common pitfalls to avoid.
+
 ## 🔗 Resources
 
 - **Verification Report**: [VERIFICATION.md](VERIFICATION.md)
 - **Testing Guide**: [TESTING.md](TESTING.md)
+- **Bug Fixes Documentation**: [FIXES.md](FIXES.md)
 - **Blockchain Explorer**: [mempool.space](https://mempool.space)
