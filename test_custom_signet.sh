@@ -1,4 +1,7 @@
 #!/bin/bash
+# Copyright (c) 2025 Moonbags
+# Distributed under the MIT software license, see the accompanying
+# file LICENSE or http://www.opensource.org/licenses/mit-license.php.
 # CUSTOM SIGNET - Edge case testing with custom signet
 # Requires: docker run -it --name custom-signet -p 38332:38332 nbd-wtf/signet:custom
 set -euo pipefail
