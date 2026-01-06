@@ -80,6 +80,23 @@ EOF
 ./setup.sh
 ```
 
+### 4. Advanced: Taproot Multisig with Timelock
+
+For a complete 2-of-2 multisig setup with one-week timelock fallback:
+
+```bash
+./taproot_multisig_setup.sh
+```
+
+This script implements:
+- Hot/cold child key derivation from xpubs
+- 2-of-2 multisig redeemScript with timelock fallback
+- Double SHA256 commitment hash
+- Taproot descriptor with NUMS (tweaked zero-key) internal key
+- Complete PSBT workflow with fundrawtransaction hex output
+
+See [CURSOR_PROMPT.md](CURSOR_PROMPT.md) for detailed instructions.
+
 ## 🧪 Testing Infrastructure
 
 Multi-network testing framework for development and validation across different environments.
