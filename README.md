@@ -1,5 +1,18 @@
 # Quantum Taproot Wallet
 
+© 2025 sha256sol (Moonbags). All rights reserved. **Patent pending.**
+
+## IP Protection
+- Timestamp: 2025-12-31 [SHA256 hash below]
+- US Copyright registered: [TXu####-###]
+- Provisional patent filed: [####/####]
+
+Private development repository.
+
+**Licensing/Partnerships:** sha256sol@protonmail.com
+
+---
+
 A Bitcoin Taproot wallet with quantum-resistant features and time-locked recovery options.
 
 ## ✅ Verified on Testnet - December 24, 2025
