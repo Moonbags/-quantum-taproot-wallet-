@@ -54,8 +54,10 @@ sudo cp bitcoin-28.0/bin/* /usr/local/bin/
 sudo chmod +x /usr/local/bin/bitcoin*
 
 # macOS
-brew install bitcoin
+brew install bitcoin jq bc openssl vim
 ```
+
+For full macOS setup (paths, bitcoin.conf, troubleshooting), see [MACOS_SETUP.md](MACOS_SETUP.md).
 
 ### 2. Configure Testnet
 

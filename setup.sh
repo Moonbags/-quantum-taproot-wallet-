@@ -15,12 +15,31 @@ echo ""
 read -rp "Use Testnet? (Y/n): " TESTNET
 [[ "$TESTNET" == "n" ]] && NET="" || NET="-testnet"
 
-# Verify Bitcoin Core
-echo "Checking Bitcoin Core..."
-if ! command -v bitcoin-cli &> /dev/null; then
-    echo "❌ bitcoin-cli not found. Install Bitcoin Core 28.0+ first."
-    exit 1
+OS_NAME=$(uname -s)
+IS_MACOS=false
+if [[ "$OS_NAME" == "Darwin" ]]; then
+    IS_MACOS=true
 fi
+
+require_cmd() {
+    local cmd="$1"
+    local brew_pkg="${2:-$1}"
+
+    if ! command -v "$cmd" &> /dev/null; then
+        if $IS_MACOS; then
+            echo "❌ Missing $cmd. Install with: brew install $brew_pkg"
+            echo "   See MACOS_SETUP.md for full setup."
+        else
+            echo "❌ $cmd not found. Install it and re-run."
+        fi
+        exit 1
+    fi
+}
+
+# Verify Bitcoin Core + tooling
+echo "Checking Bitcoin Core..."
+require_cmd "bitcoin-cli" "bitcoin"
+require_cmd "jq" "jq"
 
 VERSION=$(bitcoin-cli "$NET" --version | head -1)
 echo "✅ $VERSION"
