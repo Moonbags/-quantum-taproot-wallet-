@@ -31,8 +31,12 @@ for WALLET in hot_wallet cold_wallet recovery_wallet; do
     if bitcoin-cli "$NET" -rpcwallet=$WALLET getwalletinfo &> /dev/null 2>&1; then
         echo "  $WALLET exists ✓"
     else
-        bitcoin-cli "$NET" -named createwallet wallet_name="$WALLET" descriptors=true > /dev/null
-        echo "  $WALLET created ✓"
+        if bitcoin-cli "$NET" -named loadwallet filename="$WALLET" &> /dev/null; then
+            echo "  $WALLET loaded ✓"
+        else
+            bitcoin-cli "$NET" -named createwallet wallet_name="$WALLET" descriptors=true > /dev/null
+            echo "  $WALLET created ✓"
+        fi
     fi
 done
 
@@ -40,8 +44,12 @@ done
 if bitcoin-cli "$NET" -rpcwallet=qs getwalletinfo &> /dev/null 2>&1; then
     echo "  qs (quantum) exists ✓"
 else
-    bitcoin-cli "$NET" -named createwallet wallet_name="qs" disable_private_keys=true blank=true descriptors=true > /dev/null
-    echo "  qs (quantum) created ✓"
+    if bitcoin-cli "$NET" -named loadwallet filename="qs" &> /dev/null; then
+        echo "  qs (quantum) loaded ✓"
+    else
+        bitcoin-cli "$NET" -named createwallet wallet_name="qs" disable_private_keys=true blank=true descriptors=true > /dev/null
+        echo "  qs (quantum) created ✓"
+    fi
 fi
 
 # Extract xpubs
@@ -148,4 +156,3 @@ echo "📝 DESCRIPTOR:"
 echo "   ${FULL_DESC:0:60}..."
 echo "   Checksum: $CHECKSUM"
 echo ""
-
