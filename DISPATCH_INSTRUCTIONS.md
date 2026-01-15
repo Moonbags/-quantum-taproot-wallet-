@@ -37,6 +37,7 @@ The script defines specific instructions for creating a Taproot-based wallet wit
 ### Output
 
 - A new GitHub Issue labeled "enhancement"
+- If the repository has a `copilot/allow-code-execution-on-terminal` label, the issue includes it to allow Copilot Workspace terminal execution
 - A local file `CURSOR_PROMPT.md` (ignored by git)
 - Confirmation message: "✅ Instructions dispatched to GitHub Issue and local file."
 
@@ -54,6 +55,7 @@ The script dispatches the following technical requirements:
 
 - The generated `CURSOR_PROMPT.md` file is automatically ignored by git (see `.gitignore`)
 - Requires GitHub CLI (`gh`) to be installed and authenticated for issue creation
+- To enable Copilot Workspace terminal commands, create the `copilot/allow-code-execution-on-terminal` label in the repo
 - Requires Cursor IDE to be installed for the IDE integration
 - The script can be run multiple times; it will create new issues each time
 

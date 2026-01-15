@@ -15,10 +15,15 @@ EOF
 # Requires: gh auth login
 if command -v gh &> /dev/null; then
     echo "Creating GitHub Issue..."
+    COPILOT_LABEL="copilot/allow-code-execution-on-terminal"
+    LABELS="enhancement"
+    if gh label view "$COPILOT_LABEL" &> /dev/null; then
+        LABELS="${LABELS},${COPILOT_LABEL}"
+    fi
     if gh issue create \
       --title "Dev: Taproot Multisig Setup with Timelock" \
       --body "$PROMPT_BODY" \
-      --label "enhancement"; then
+      --label "$LABELS"; then
         echo "✅ GitHub Issue created successfully"
     else
         echo "⚠️  GitHub Issue creation failed. Make sure you're authenticated: gh auth login"
